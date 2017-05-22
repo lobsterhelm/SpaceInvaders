@@ -1,10 +1,12 @@
 #include "Player.h"
 
-Player::Player(sf::RectangleShape ship)
+Player::Player(sf::RectangleShape ship, float size, sf::Color color)
 {
-	ship.setSize(sf::Vector2f(32, 32));
-	ship.setFillColor(sf::Color::Green);
-	ship.setPosition(sf::Vector2f(0, 0));
+	ship.setSize(sf::Vector2f(size, size));
+	ship.setFillColor(color);
+	ship.setOrigin(sf::Vector2f(size / 2, size / 2));
+	ship.setPosition(sf::Vector2f(400, 640 - (size * 2)));
+	m_ship = ship;
 }
 
 
@@ -12,24 +14,13 @@ Player::~Player()
 {
 }
 
-void Player::Update(float dt, sf::RectangleShape& ship) {
-
-	static const int framesPerSecond = 60;
-	static const float fixedFrameStep = 1.0f / (float)framesPerSecond;
-	static float frameTime = 0.0f;
-
-	frameTime += dt;
-	if (frameTime > fixedFrameStep)
-	{
-		frameTime -= fixedFrameStep;
-	}
+void Player::Update(float dt) {
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-		ship.move(1 * dt, 0);
+		m_ship.move(m_playerSpeed * dt, 0);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-		ship.move(0, 1 * dt);
+		m_ship.move(-m_playerSpeed * dt, 0);
 	}
-	
 }
 
