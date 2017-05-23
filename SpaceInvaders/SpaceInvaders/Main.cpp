@@ -93,13 +93,21 @@ int main() {
 			if (objects[i] == nullptr) { continue; }
 			window.draw(objects[i]->GetShape());
 			objects[i]->Update(dt);
-
-			if(objects[i]->GetShape().getPosition().y > WINDOW_SIZE.y) {
+			for (int j = 0; j < objects.size(); j++) {
+				if (objects[i] == nullptr || objects[j] == nullptr) { continue; }
+				if (objects[i]->CheckCollision(objects[j])) {
+					delete objects[i];
+					delete objects[j];
+					objects[i] = nullptr;
+					objects[j] = nullptr;
+				}
+			}
+			if (objects[i] == nullptr) { continue; }
+			if(objects[i]->GetShape().getPosition().y > WINDOW_SIZE.y || objects[i]->GetShape().getPosition().y < 0) {
 				delete objects[i];
 				objects[i] = nullptr;
 			}
 		}
-		
 		window.display();
 	}
 

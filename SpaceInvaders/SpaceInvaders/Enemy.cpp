@@ -14,8 +14,16 @@ Enemy::~Enemy()
 {
 }
 
+bool Enemy::CheckCollision(Object* obj){
+	if (this == obj) { return false; }
+	if (obj->GetShape().getGlobalBounds().intersects(this->GetShape().getGlobalBounds())) {
+		std::cout << "POW!!!!" << std::endl;
+		return true;
+	}
+	return false;
+}
+
 void Enemy::Update(float dt)
 {
 	m_ship.move(0, m_enemySpeed * dt);
 }
-

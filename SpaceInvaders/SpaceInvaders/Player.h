@@ -9,7 +9,7 @@ public:
 	Player(sf::RectangleShape ship, float size, sf::Color color);
 	~Player();
 	
-	Bullet bulletRef;
+	bool CheckCollision(Object* obj);
 
 	void Update(float dt);
 	sf::RectangleShape GetShape() { return m_ship; }

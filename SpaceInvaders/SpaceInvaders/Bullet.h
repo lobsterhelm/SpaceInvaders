@@ -5,9 +5,10 @@
 class Bullet : public Object
 {
 public:
-	Bullet();
 	Bullet(sf::RectangleShape bullet, float size, sf::Color color, sf::Vector2f pos);
 	~Bullet();
+
+	bool CheckCollision(Object* obj);
 
 	void Update(float dt);
 	sf::RectangleShape GetShape() { return m_bullet; }

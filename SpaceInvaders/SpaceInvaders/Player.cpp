@@ -1,5 +1,6 @@
 #include "Player.h"
 
+
 Player::Player(sf::RectangleShape ship, float size, sf::Color color)
 {
 	ship.setSize(sf::Vector2f(size, size));
@@ -24,3 +25,6 @@ void Player::Update(float dt) {
 	}
 }
 
+bool Player::CheckCollision(Object* obj) {
+	return false;
+}

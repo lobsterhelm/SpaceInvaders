@@ -1,8 +1,5 @@
 #include "Bullet.h"
 
-Bullet::Bullet()
-{
-}
 
 Bullet::Bullet(sf::RectangleShape bullet, float size, sf::Color color, sf::Vector2f pos)
 {
@@ -16,6 +13,10 @@ Bullet::Bullet(sf::RectangleShape bullet, float size, sf::Color color, sf::Vecto
 
 Bullet::~Bullet()
 {
+}
+
+bool Bullet::CheckCollision(Object* obj){
+	return false;
 }
 
 void Bullet::Update(float dt) 
