@@ -7,37 +7,38 @@
 #include "Bullet.h"
 #include "Object.h"
 
+//This spawns enemys
 void SpawnEnemy(std::vector<Object*> &vec, sf::Time &time, sf::Clock &clock, int windowSize) {
 
 	time = clock.getElapsedTime();
 
+	//True once every second
 	if (time.asSeconds() >= 1.0f) {
 		for (int i = 0; i < vec.size(); i++) {
+			//If there are any nullptrs in our vector they'll be replaced before we create new enemys
 			if (vec[i] == nullptr) {
 				vec[i] = new Enemy(sf::RectangleShape(), 32, sf::Color::Red, sf::Vector2f(rand() % windowSize, 0));
 				clock.restart();
-				//std::cout << "Enemy replaced nullptr" << std::endl;
 				return;
 			}
 		}
+		//Creates a new enemy
 		vec.push_back(new Enemy(sf::RectangleShape(), 32, sf::Color::Red,sf::Vector2f(rand() % windowSize, 0)));
 		clock.restart();
-
-		//std::cout << "Enemy Spawn" << std::endl;
 	}
 }
 
+//This spawns bullets
 void SpawnBullet(std::vector<Object*> &vec, int index) {
 		for (int i = 0; i < vec.size(); i++) {
+			//If there are any nullptrs replace them before we create new bullets
 			if (vec[i] == nullptr) {
 				vec[i] = new Bullet(sf::RectangleShape(), 16, sf::Color::White, vec[index]->GetShape().getPosition());
-				//std::cout << "Bullet replaced nullptr" << std::endl;
 				return;
 			}
 		}
+		//Creates new bullets
 		vec.push_back(new Bullet(sf::RectangleShape(), 16, sf::Color::White, vec[index]->GetShape().getPosition()));
-
-		//std::cout << "Bullet Spawn" << std::endl;
 }
 
 int main() {
@@ -47,9 +48,9 @@ int main() {
 
 	bool fire = true;
 
-	std::vector<Object*> objects;
+	std::vector<Object*> objects;	//The vector that holds pointers to all our objects in the game
 
-	objects.push_back(new Player(sf::RectangleShape(), 32, sf::Color::Green));
+	objects.push_back(new Player(sf::RectangleShape(), 32, sf::Color::Green));	//Create the player and store it in the vector
 
 	sf::Time spawnTimer;
 	sf::Clock spawnClock;
@@ -60,6 +61,7 @@ int main() {
 
 	sf::RenderWindow window(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "Space Invaders!");
 
+	//Game loop
 	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event)) {
@@ -82,28 +84,32 @@ int main() {
 			}
 		}
 
-		window.clear(sf::Color::Black);
+		window.clear(sf::Color::Black);	//Clear the window color
 
 		dt = timer.asSeconds();
 		timer = clock.restart();
 
-		SpawnEnemy(objects, spawnTimer, spawnClock, WINDOW_SIZE.x);
+		SpawnEnemy(objects, spawnTimer, spawnClock, WINDOW_SIZE.x);	//Start spawning enemys
 
-		for (int i = 0; i < objects.size(); i++) {
-			if (objects[i] == nullptr) { continue; }
-			window.draw(objects[i]->GetShape());
-			objects[i]->Update(dt);
-			for (int j = 0; j < objects.size(); j++) {
-				if (objects[i] == nullptr || objects[j] == nullptr) { continue; }
-				if (objects[i]->CheckCollision(objects[j])) {
-					delete objects[i];
+														
+		for (int i = 0; i < objects.size(); i++) {		//Loop through the objects vector
+			if (objects[i] == nullptr) { continue; }	//If element contains nullptr, skip it
+			window.draw(objects[i]->GetShape());		//Draw the objects shapes
+			objects[i]->Update(dt);						//Update the objects
+			
+			
+			for (int j = 0; j < objects.size(); j++) {									//Loop through the objects again
+				if (objects[i] == nullptr || objects[j] == nullptr) { continue; }		//If element contains a nullptr, skip it
+				if (objects[i]->CheckCollision(objects[j], window)) {					//Check collision between objects[i] and objects[j]
+					delete objects[i];													//Delete the pointers and replace them with nullptrs
 					delete objects[j];
 					objects[i] = nullptr;
 					objects[j] = nullptr;
 				}
 			}
-			if (objects[i] == nullptr) { continue; }
-			if(objects[i]->GetShape().getPosition().y > WINDOW_SIZE.y || objects[i]->GetShape().getPosition().y < 0) {
+			if (objects[i] == nullptr) { continue; } //New check for nullptrs since we might have some after the collision check
+														
+			if(objects[i]->GetShape().getPosition().y > WINDOW_SIZE.y || objects[i]->GetShape().getPosition().y < 0) {	//Delete objects that's outside the screen
 				delete objects[i];
 				objects[i] = nullptr;
 			}
@@ -111,6 +117,7 @@ int main() {
 		window.display();
 	}
 
+	//Clear the vector of pointers
 	for (Object* obj : objects) {
 		delete obj;
 		obj = nullptr;

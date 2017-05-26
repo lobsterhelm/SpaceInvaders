@@ -9,7 +9,7 @@ public:
 	Player(sf::RectangleShape ship, float size, sf::Color color);
 	~Player();
 	
-	bool CheckCollision(Object* obj);
+	bool CheckCollision(Object* obj, sf::RenderWindow &win);
 
 	void Update(float dt);
 	sf::RectangleShape GetShape() { return m_ship; }

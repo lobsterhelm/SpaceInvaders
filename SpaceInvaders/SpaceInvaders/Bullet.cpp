@@ -15,7 +15,7 @@ Bullet::~Bullet()
 {
 }
 
-bool Bullet::CheckCollision(Object* obj){
+bool Bullet::CheckCollision(Object* obj, sf::RenderWindow &win){
 	return false;
 }
 

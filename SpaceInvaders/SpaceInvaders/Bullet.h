@@ -8,7 +8,7 @@ public:
 	Bullet(sf::RectangleShape bullet, float size, sf::Color color, sf::Vector2f pos);
 	~Bullet();
 
-	bool CheckCollision(Object* obj);
+	bool CheckCollision(Object* obj, sf::RenderWindow &win);
 
 	void Update(float dt);
 	sf::RectangleShape GetShape() { return m_bullet; }

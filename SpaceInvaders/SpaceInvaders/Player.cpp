@@ -15,6 +15,7 @@ Player::~Player()
 {
 }
 
+//Reads input and moves player
 void Player::Update(float dt) {
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
@@ -25,6 +26,7 @@ void Player::Update(float dt) {
 	}
 }
 
-bool Player::CheckCollision(Object* obj) {
+//Collision checking ended up being done on only the enemy
+bool Player::CheckCollision(Object* obj, sf::RenderWindow &win) {
 	return false;
 }
